@@ -1,5 +1,4 @@
-# BSC Four.meme Bot
-
+# BSC(BNB) Trading Bot
 A **command-line trading toolkit** for **BNB Chain** focused on [Four.meme](https://four.meme)-style memecoin workflows. It talks **directly to the chain** through **PancakeSwap V2–compatible routers** (no centralized trading API). Use it to **snipe buys**, **run scripted routes**, **simulate volume**, or experiment with a **simple copy/mirror** flow — always with **`--dry-run`** first.
 
 > **Disclaimer:** Trading memecoins is extremely risky. This software is provided as-is for education and automation. You are responsible for keys, RPC choice, taxes, and compliance. Nothing here is financial advice.
